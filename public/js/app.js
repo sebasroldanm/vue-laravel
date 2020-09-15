@@ -1988,16 +1988,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 
-moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es');
+moment__WEBPACK_IMPORTED_MODULE_2___default.a.lang('es');
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      ideas: []
+      ideas: [],
+      newIdea: ''
     };
   },
   created: function created() {
@@ -2007,12 +2006,27 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es');
     since: function since(d) {
       return moment__WEBPACK_IMPORTED_MODULE_2___default()(d).fromNow();
     },
-    getIdeas: function getIdeas() {
+    getIdeas: function getIdeas(page) {
       var _this = this;
 
       var urlIdeas = 'mis-ideas';
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(urlIdeas).then(function (Response) {
-        _this.ideas = Response.data;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(urlIdeas).then(function (response) {
+        _this.ideas = response.data;
+      });
+    },
+    createIdea: function createIdea() {
+      var _this2 = this;
+
+      var url = 'guardar-idea';
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(url, {
+        description: this.newIdea
+      }).then(function (response) {
+        _this2.getIdeas();
+
+        _this2.newIdea = '';
+        toastr__WEBPACK_IMPORTED_MODULE_1___default.a.success('Nueva idea registrada');
+      })["catch"](function (error) {
+        toastr__WEBPACK_IMPORTED_MODULE_1___default.a.error('Error');
       });
     }
   }
@@ -59977,7 +59991,44 @@ var render = function() {
           _vm._m(1),
           _vm._v(" "),
           _c("div", { staticClass: "well" }, [
-            _vm._m(2),
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.createIdea($event)
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "input-group" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.newIdea,
+                        expression: "newIdea"
+                      }
+                    ],
+                    staticClass: "form-control input-sm",
+                    attrs: { type: "text", maxlength: "256" },
+                    domProps: { value: _vm.newIdea },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.newIdea = $event.target.value
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm._m(2)
+                ])
+              ]
+            ),
             _vm._v(" "),
             _c("hr"),
             _vm._v(" "),
@@ -59991,8 +60042,8 @@ var render = function() {
                       _c("em", [_vm._v(_vm._s(_vm.since(item.created_at)))])
                     ]),
                     _vm._v(
-                      "\n                                " +
-                        _vm._s(item.descripcion) +
+                      " \n                                " +
+                        _vm._s(item.description) +
                         "\n                            "
                     )
                   ])
@@ -60027,28 +60078,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("form", [
-      _c("div", { staticClass: "input-group" }, [
-        _c("input", {
-          staticClass: "form-control input-sm",
-          attrs: { type: "text", maxlength: "256" }
-        }),
-        _vm._v(" "),
-        _c("span", { staticClass: "input-group-btn" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary btn-sm",
-              attrs: { type: "submit" }
-            },
-            [
-              _vm._v(
-                "\n                                    Agregar\n                                "
-              )
-            ]
+    return _c("span", { staticClass: "input-group-btn" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-primary btn-sm", attrs: { type: "submit" } },
+        [
+          _vm._v(
+            "\n                                    Agregar\n                                "
           )
-        ])
-      ])
+        ]
+      )
     ])
   }
 ]

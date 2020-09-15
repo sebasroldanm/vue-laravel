@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class IdeaController extends Controller
 {
-    public function getIdea()
+    public function getIdeas()
     {
-        return Idea::orderBy('id', 'DESC')->get();
+    	return Idea::orderBy('id', 'DESC')->get();
     }
 
     public function store(Request $request)
@@ -17,6 +17,9 @@ class IdeaController extends Controller
         $this->validate($request, [
             'description' => 'required'
         ]);
-        Idea::created($request->all());
+
+        Idea::create($request->all());
+        
+        return;
     }
 }

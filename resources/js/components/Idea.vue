@@ -13,9 +13,9 @@
 
                     <div class="well">
                         <!-- <h4>En que estas pensando?</h4> -->
-                        <form>
+                        <form v-on:submit.prevent="createIdea">
                             <div class="input-group">
-                                <input type="text" class="form-control input-sm" maxlength="256">
+                                <input type="text" class="form-control input-sm" v-model="newIdea" maxlength="256">
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         Agregar
@@ -27,10 +27,8 @@
                         <ul class="list-unstyled">
                             <li v-for="(item, i) in ideas" :key="i">
                                 <p>
-                                    <small class="text-muted">
-                                        <em>{{ since(item.created_at) }}</em>
-                                    </small>
-                                    {{ item.descripcion }}
+                                    <small class="text-muted"><em>{{ since(item.created_at) }}</em></small> 
+                                    {{ item.description }}
                                 </p>
                             </li>
                         </ul>
@@ -42,30 +40,42 @@
 </template>
 
 <script>
-    import axios from 'axios';
-    import toastr from 'toastr';
-    import moment from 'moment';
+    import axios  from 'axios'
+    import toastr from 'toastr'
+    import moment from 'moment'
+    moment.lang('es');
     
-    moment.locale('es')
-
     export default {
-        data() {
+        data () {
             return {
-                ideas: []
+                ideas : [],
+                newIdea: '',
             }
         },
         created: function() {
-            this.getIdeas()
+            this.getIdeas();
         },
         methods: {
             since: function(d) {
-                return moment(d).fromNow()
+                return moment(d).fromNow();
             },
-            getIdeas: function() {
-                var urlIdeas = 'mis-ideas'
-                axios.get(urlIdeas).then(Response => {
-                this.ideas = Response.data
-                })
+            getIdeas: function(page) {
+                var urlIdeas = 'mis-ideas';
+                axios.get(urlIdeas).then(response => {
+                    this.ideas = response.data
+                });
+            },
+            createIdea: function() {
+                var url = 'guardar-idea';
+                axios.post(url, {
+                    description: this.newIdea
+                }).then(response => {
+                    this.getIdeas();
+                    this.newIdea = '';
+                    toastr.success('Nueva idea registrada');
+                }).catch(error => {
+                    toastr.error('Error');
+                });
             }
         }
     }

@@ -20,5 +20,5 @@ Route::get('home', function () {
     return view('home');
 });
 
-Route::get('mis-ideas', 'IdeaController@getIdea');
-Route::post('guardar-ideas', 'IdeaController@store');
+Route::get('mis-ideas', 'IdeaController@getIdeas');
+Route::post('guardar-idea', 'IdeaController@store');
