@@ -25,12 +25,12 @@
                         </form>
                         <hr>
                         <ul class="list-unstyled">
-                            <li>
+                            <li v-for="(item, i) in ideas" :key="i">
                                 <p>
                                     <small class="text-muted">
-                                        <em>Hace un minuto</em>
+                                        <em>{{ since(item.created_at) }}</em>
                                     </small>
-                                    Mi nueva idea
+                                    {{ item.descripcion }}
                                 </p>
                             </li>
                         </ul>
@@ -42,9 +42,31 @@
 </template>
 
 <script>
+    import axios from 'axios';
+    import toastr from 'toastr';
+    import moment from 'moment';
+    
+    moment.locale('es')
+
     export default {
-        mounted() {
-            console.log('Component mounted.')
+        data() {
+            return {
+                ideas: []
+            }
+        },
+        created: function() {
+            this.getIdeas()
+        },
+        methods: {
+            since: function(d) {
+                return moment(d).fromNow()
+            },
+            getIdeas: function() {
+                var urlIdeas = 'mis-ideas'
+                axios.get(urlIdeas).then(Response => {
+                this.ideas = Response.data
+                })
+            }
         }
     }
 </script>
