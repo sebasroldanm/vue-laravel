@@ -17,4 +17,5 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('mis-ideas', 'IdeaController@getIdeas');
+Route::post('guardar-ideas', 'IdeaController@store');

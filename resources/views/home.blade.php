@@ -28,7 +28,7 @@
                             </div>
                         </form>
                         <hr>
-                        <ul class="">
+                        <ul class="list-unstyled">
                             <li>
                                 <p>
                                     <small class="text-muted">
