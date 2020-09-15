@@ -28,7 +28,7 @@
                             <li v-for="(item, i) in ideas" :key="i">
                                 <p>
                                     <small class="text-muted"><em>{{ since(item.created_at) }}</em></small> 
-                                    {{ item.description }}
+                                    {{ item.descripcion }}
                                 </p>
                             </li>
                         </ul>
@@ -43,7 +43,7 @@
     import axios  from 'axios'
     import toastr from 'toastr'
     import moment from 'moment'
-    moment.lang('es');
+    moment.locale('es');
     
     export default {
         data () {
@@ -68,7 +68,7 @@
             createIdea: function() {
                 var url = 'guardar-idea';
                 axios.post(url, {
-                    description: this.newIdea
+                    descripcion: this.newIdea
                 }).then(response => {
                     this.getIdeas();
                     this.newIdea = '';

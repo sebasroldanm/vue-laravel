@@ -15,11 +15,9 @@ class IdeaController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'description' => 'required'
+            'descripcion' => 'required'
         ]);
-
         Idea::create($request->all());
-        
         return;
     }
 }
